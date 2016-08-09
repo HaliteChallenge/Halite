@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class MyBot {
-	public static void main(String[] args) {
-		InitPackage iPackage = Networking.getInit();
+	public static void main(String[] args) throws java.io.IOException {
+		InitPackage iPackage = Networking.getInit(Integer.parseInt(args[1]));
 		int myID = iPackage.myID;
 		GameMap gameMap = iPackage.map;
 
