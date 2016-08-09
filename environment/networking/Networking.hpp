@@ -12,11 +12,15 @@
 #else
 	#include <signal.h>
 	#include <time.h>
-	#include <sys/types.h>
 	#include <sys/stat.h>
 	#include <fcntl.h>
 	#include <sys/select.h>
 	#include <unistd.h>
+	#include <netdb.h>
+	#include <netinet/in.h>
+	#include <string.h>
+	#include <sys/types.h>
+	#include <sys/socket.h>
 #endif
 
 #include "../core/hlt.hpp"
@@ -42,10 +46,7 @@ private:
 	std::vector<WinConnection> connections;
 	std::vector<HANDLE> processes;
 #else
-	struct UniConnection {
-		int read, write;
-	};
-	std::vector< UniConnection > connections;
+	std::vector<int> connections;
 	std::vector<int> processes;
 #endif
 
