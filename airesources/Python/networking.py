@@ -8,6 +8,7 @@ import sys
 _productions = []
 _width = -1
 _height = -1
+_connection = None
 
 def serializeMoveSet(moves):
 	returnString = ""
@@ -59,14 +60,22 @@ def deserializeMap(inputString):
 
 def sendString(toBeSent):
 	toBeSent += '\n'
-
-	sys.stdout.write(toBeSent)
-	sys.stdout.flush()
+	_connection.sendall(toBeSent)
 
 def getString():
-	return sys.stdin.readline().rstrip('\n')
+	newString = ""
+	buffer = '\0'
+	while True:
+		buffer = _connection.recv(1)
+		if buffer != '\n':
+			newString += str(buffer)
+		else:
+			return newString
 
-def getInit():
+def getInit(port):
+	_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	_connection.bind('localhost', port)
+
 	playerTag = int(getString())
 	deserializeMapSize(getString())
 	deserializeProductions(getString())
@@ -76,7 +85,7 @@ def getInit():
 
 def sendInit(name):
 	sendString(name)
-
+E
 def getFrame():
 	return deserializeMap(getString())
 
