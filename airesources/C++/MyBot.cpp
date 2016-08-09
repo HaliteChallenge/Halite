@@ -9,7 +9,7 @@
 #include "hlt.hpp"
 #include "networking.hpp"
 
-int main() {
+int main(int argc, char ** argv) {
 	srand(time(NULL));
 
 	std::ofstream dbg("dbg.log");
@@ -18,7 +18,7 @@ int main() {
 
 	unsigned char myID;
 	hlt::GameMap presentMap;
-	getInit(myID, presentMap);
+	getInit(atoi(argv[1]), myID, presentMap); //argv[1] is the port number to connect to.
 	sendInit("C++Bot");
 
 	std::set<hlt::Move> moves;

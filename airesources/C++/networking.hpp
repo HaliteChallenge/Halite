@@ -10,6 +10,7 @@
 #include <sstream>
 #include <algorithm>
 #include <bitset>
+#include <assert.h>
 
 #ifdef _WIN32
 #include <sys/types.h>
@@ -22,13 +23,19 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <sys/types.h>
 #endif
 
 #include "hlt.hpp"
 
 namespace detail{
 static std::vector< std::vector<unsigned char> > productions;
-static int width, height;
+static int width, height, connection;
 
 static std::string serializeMoveSet(const std::set<hlt::Move> &moves) {
 	std::ostringstream oss;
@@ -90,19 +97,36 @@ static hlt::GameMap deserializeMap(const std::string & inputString) {
 
 	return map;
 }
-static void sendString(const std::string & sendString) {
-	if(sendString.length() < 1) std::cout << ' ' << std::endl; //Automatically flushes.
-	else std::cout << sendString << std::endl; //Automatically flushes.
+static void sendString(std::string & sendString) {
+	sendString.push_back('\n');
+	write(connection, sendString.c_str(), sendString.size());
+	sendString.pop_back(); //Remove newline.
 }
 
 static std::string getString() {
 	std::string newString;
-	std::getline(std::cin, newString);
+	char buffer = 0;
+	while(buffer != '\n') {
+		assert(read(connection, &buffer, 1) >= 0);
+		newString.push_back(buffer);
+	}
 	return newString;
 }
 }
 
-static void getInit(unsigned char& playerTag, hlt::GameMap& m) {
+static void getInit(int port, unsigned char& playerTag, hlt::GameMap& m) {
+	//Connect to port
+	detail::connection = socket(AF_INET, SOCK_STREAM, 0);
+	assert(detail::connection >= 0);
+	struct hostent *server;
+	server = gethostbyname("127.0.0.1");
+	assert(server != NULL);
+	struct sockaddr_in serverAddr;
+	bzero((char *) &serverAddr, sizeof(serverAddr));
+	serverAddr.sin_family = AF_INET;
+	bcopy((char *)server->h_addr, (char *)&serverAddr.sin_addr.s_addr, server->h_length);
+	serverAddr.sin_port = htons(port);
+	assert(connect(detail::connection, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) >= 0);
 	playerTag = (unsigned char)std::stoi(detail::getString());
 	detail::deserializeMapSize(detail::getString());
 	detail::deserializeProductions(detail::getString());
@@ -118,7 +142,8 @@ static void getFrame(hlt::GameMap& m) {
 	m = detail::deserializeMap(detail::getString());
 }
 static void sendFrame(const std::set<hlt::Move> &moves) {
-	detail::sendString(detail::serializeMoveSet(moves));
+	std::string serializedMoves = detail::serializeMoveSet(moves);
+	detail::sendString(serializedMoves);
 }
 
 #endif
