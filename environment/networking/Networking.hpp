@@ -40,14 +40,11 @@ public:
 
 private:
 #ifdef _WIN32
-	struct WinConnection {
-		HANDLE write, read;
-	};
-	std::vector<WinConnection> connections;
 	std::vector<HANDLE> processes;
+	std::vector<SOCKET> connections;
 #else
-	std::vector<int> connections;
 	std::vector<int> processes;
+	std::vector<int> connections;
 #endif
 
 	std::string serializeMap(const hlt::Map & map);
