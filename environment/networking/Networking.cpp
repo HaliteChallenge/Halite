@@ -299,29 +299,51 @@ void Networking::startAndConnectBot(std::string command, int port) {
 #else
     if(!quiet_output) std::cout << command << "\n";
 
+    //Create socket.
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-    int arg = fcntl(sock, F_GETFL, NULL));
+    assert(sock >= 0);
+    //Setup socket address.
+    struct sockaddr_in serv_addr, clien_addr;
+    unsigned int clien_addr_len = sizeof(clien_addr);
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    serv_addr.sin_port = htons(port);
+    int adr_result = bind(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
+    assert(adr_result >= 0);
+    //Set socket to non-blocking mode.
+    int arg = fcntl(sock, F_GETFL, NULL);
     assert(arg >= 0);
     arg |= O_NONBLOCK;
-    int result = fcntl(sock, F_SETFL, arg);
-    assert(result >= 0);
-
-    int pid = fork(), sock; //Fork child process
+    int bloc_result = fcntl(sock, F_SETFL, arg);
+    assert(bloc_result >= 0);
+    //Fork child process.
+    int pid = fork();
     if(pid == 0) { //This is the child
-        setpgid(getpid(), getpid());
+        setpgid(getpid(), getpid()); //Set pid group.
 
-
-
-        execl("/bin/sh", "sh", "-c", command.c_str(), (char*) NULL);
+        execl("/bin/sh", "sh", "-c", command.c_str(), (char*) NULL); //Replace fork with bot.
 
         //Nothing past the execl should be run
         assert(false); //Changed to assert from exit(1) as it will fail loudly.
     } else if(pid < 0) {
-        if(!quiet_output) std::cout << "Fork failed\n";
+        if(!quiet_output) std::cout << "Fork failed.\n";
         throw 1;
     }
 
-    connections.push_back(socket);
+    const int NUM_CON_MILLIS = 3000;
+    int millisLeft = NUM_CON_MILLIS;
+    std::chrono::high_resolution_clock::time_point tp = std::chrono::high_resolution_clock::now();
+    while(millisLeft >= 0) {
+        if(accept(sock, (struct sockaddr *)&clien_addr, &clien_addr_len) >= 0) break;
+        millisLeft -= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp).count();
+    }
+    if(millisLeft < 0) {
+        if(!quiet_output) std::cout << "Player did not connect.\n";
+        throw 2;
+    }
+
+    connections.push_back(sock);
     processes.push_back(pid);
 
 #endif
@@ -415,16 +437,14 @@ void Networking::killPlayer(unsigned char playerTag) {
     TerminateProcess(process, 0);
 
     processes[playerTag - 1] = NULL;
-    connections[playerTag - 1].read = NULL;
-    connections[playerTag - 1].write = NULL;
+    connections[playerTag - 1] = NULL;
 
     if(!quiet_output) std::cout << "Player " << int(playerTag) << " is dead\n";
 #else
     kill(-processes[playerTag - 1], SIGKILL);
 
     processes[playerTag - 1] = -1;
-    connections[playerTag - 1].read = -1;
-    connections[playerTag - 1].write = -1;
+    connections[playerTag - 1] = -1;
 #endif
 }
 

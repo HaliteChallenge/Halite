@@ -21,6 +21,7 @@
 	#include <string.h>
 	#include <sys/types.h>
 	#include <sys/socket.h>
+	#include <sys/types.h>
 #endif
 
 #include "../core/hlt.hpp"
