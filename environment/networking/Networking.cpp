@@ -100,8 +100,8 @@ void Networking::sendString(unsigned char playerTag, std::string &sendString) {
         throw 1;
     }
 #else
-    UniConnection connection = connections[playerTag - 1];
-    ssize_t charsWritten = write(connection.write, sendString.c_str(), sendString.length());
+    int connection = connections[playerTag - 1];
+    ssize_t charsWritten = write(connection, sendString.c_str(), sendString.length());
     if(charsWritten < sendString.length()) {
         if(!quiet_output) std::cout << "Problem writing to pipe\n";
         throw 1;
@@ -299,28 +299,29 @@ void Networking::startAndConnectBot(std::string command, int port) {
 #else
     if(!quiet_output) std::cout << command << "\n";
 
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    int arg = fcntl(sock, F_GETFL, NULL));
+    assert(arg >= 0);
+    arg |= O_NONBLOCK;
+    int result = fcntl(sock, F_SETFL, arg);
+    assert(result >= 0);
+
     int pid = fork(), sock; //Fork child process
     if(pid == 0) { //This is the child
         setpgid(getpid(), getpid());
 
-        sock = socket(AF_INET, SOCK_STREAM, 0);
 
 
         execl("/bin/sh", "sh", "-c", command.c_str(), (char*) NULL);
 
         //Nothing past the execl should be run
-
-        exit(1);
+        assert(false); //Changed to assert from exit(1) as it will fail loudly.
     } else if(pid < 0) {
         if(!quiet_output) std::cout << "Fork failed\n";
         throw 1;
     }
 
-    UniConnection connection;
-    connection.read = readPipe[0];
-    connection.write = writePipe[1];
-
-    connections.push_back(connection);
+    connections.push_back(socket);
     processes.push_back(pid);
 
 #endif
