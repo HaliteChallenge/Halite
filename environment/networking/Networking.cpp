@@ -128,7 +128,7 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
 
         //Check if there are bytes in the pipe
         timeoutMillis -= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp).count();
-        tp = std::chrono::high_resolution_clock::now(); 
+        tp = std::chrono::high_resolution_clock::now();
         if(timeoutMillis < 0) {
             if(!quiet_output) {
                 std::string errorMessage = "Bot #" + std::to_string(playerTag) + " timed out.\n";
@@ -185,7 +185,7 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
 
         //Check if there are bytes in the pipe
         timeoutMillis -= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp).count();
-        tp = std::chrono::high_resolution_clock::now(); 
+        tp = std::chrono::high_resolution_clock::now();
         if(timeoutMillis < 0) {
             if(!quiet_output) {
                 std::string errorMessage = "Bot #" + std::to_string(playerTag) + " timed out.\n";
@@ -233,7 +233,7 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
     return newString;
 }
 
-void Networking::startAndConnectBot(std::string command) {
+void Networking::startAndConnectBot(std::string command, int port) {
 #ifdef _WIN32
     command = "/C " + command;
 
@@ -299,28 +299,12 @@ void Networking::startAndConnectBot(std::string command) {
 #else
     if(!quiet_output) std::cout << command << "\n";
 
-    pid_t pid = (pid_t)NULL;
-    int writePipe[2];
-    int readPipe[2];
-
-    if(pipe(writePipe)) {
-        if(!quiet_output) std::cout << "Error creating pipe\n";
-        throw 1;
-    }
-    if(pipe(readPipe)) {
-        if(!quiet_output) std::cout << "Error creating pipe\n";
-        throw 1;
-    }
-
-    //Fork a child process
-    pid = fork();
+    int pid = fork(), sock; //Fork child process
     if(pid == 0) { //This is the child
         setpgid(getpid(), getpid());
 
-        dup2(writePipe[0], STDIN_FILENO);
+        sock = socket(AF_INET, SOCK_STREAM, 0);
 
-        dup2(readPipe[1], STDOUT_FILENO);
-        dup2(readPipe[1], STDERR_FILENO);
 
         execl("/bin/sh", "sh", "-c", command.c_str(), (char*) NULL);
 
@@ -403,7 +387,7 @@ void Networking::handleFrameNetworking(unsigned char playerTag, const unsigned s
         player_logs[playerTag - 1] += response + "\n --- Bot used " + std::to_string(millisTaken) + " milliseconds ---";
 
         *moves = deserializeMoveSet(response, m);
-        
+
         *playermillis -= millisTaken;
     }
     catch(std::string s) {

@@ -29,7 +29,7 @@ extern bool quiet_output;
 
 class Networking {
 public:
-	void startAndConnectBot(std::string command);
+	void startAndConnectBot(std::string command, int port);
 	void handleInitNetworking(unsigned char playerTag, const hlt::Map & m, int * playerMillis, std::string * playerName);
 	void handleFrameNetworking(unsigned char playerTag, const unsigned short & turnNumber, const hlt::Map & m, int * playermillis, std::map<hlt::Location, unsigned char> * moves);
 	void killPlayer(unsigned char playerTag);
