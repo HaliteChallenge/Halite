@@ -2,7 +2,7 @@ from hlt import *
 from networking import *
 import sys
 
-myID, gameMap = getInit(sys.argv[1]) # Port is first argument.
+myID, gameMap = getInit(int(sys.argv[1])) # Port is first argument.
 sendInit("PythonBot")
 
 while True:

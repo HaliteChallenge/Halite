@@ -59,10 +59,12 @@ def deserializeMap(inputString):
 	return m
 
 def sendString(toBeSent):
+	global _connection
 	toBeSent += '\n'
 	_connection.sendall(toBeSent)
 
 def getString():
+	global _connection
 	newString = ""
 	buffer = '\0'
 	while True:
@@ -73,8 +75,10 @@ def getString():
 			return newString
 
 def getInit(port):
+	# Connect to environment.
+	global _connection
 	_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	_connection.bind('localhost', port)
+	_connection.connect(('localhost', port))
 
 	playerTag = int(getString())
 	deserializeMapSize(getString())
@@ -85,7 +89,7 @@ def getInit(port):
 
 def sendInit(name):
 	sendString(name)
-E
+
 def getFrame():
 	return deserializeMap(getString())
 
