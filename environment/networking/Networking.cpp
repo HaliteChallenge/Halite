@@ -85,7 +85,7 @@ std::map<hlt::Location, unsigned char> Networking::deserializeMoveSet(std::strin
     return moves;
 }
 
-void Networking::sendString(unsigned char playerTag, std::string &sendString) {
+void Networking::sendString(unsigned char playerTag, std::string sendString) {
     //End message with newline character
     sendString += '\n';
 
@@ -101,23 +101,26 @@ void Networking::sendString(unsigned char playerTag, std::string &sendString) {
     }
 #else
     int connection = connections[playerTag - 1];
-    ssize_t charsWritten = write(connection, sendString.c_str(), sendString.length());
-    if(charsWritten < sendString.length()) {
-        if(!quiet_output) std::cout << "Problem writing to pipe\n";
-        throw 1;
-    }
+    do {
+        int result = write(connection, sendString.c_str(), sendString.length());
+        if(result < 0) {
+            if(!quiet_output) std::cout << "Problem writing to pipe\n";
+            throw 1;
+        }
+        sendString = sendString.substr(result);
+    } while(sendString.length() > 0);
 #endif
 }
 
 std::string Networking::getString(unsigned char playerTag, unsigned int timeoutMillis) {
 
-    std::string newString;
-#ifdef _WIN32
-
-    std::string buffer(16384, 0); //Buffer as large as (I think) could possibly be necessary.
+    const int BUF_SIZE = 16384;
+    char * buffer = new char[BUF_SIZE]; //Buffer as large as (I think) could possibly be necessary.
     std::string newString; //Our result.
 
     std::chrono::high_resolution_clock::time_point tp = std::chrono::high_resolution_clock::now();
+
+#ifdef _WIN32
 
     WSAPOLLFD fd;
     fd.fd = connections[playerTag - 1];
@@ -171,11 +174,6 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
     }
 #else
 
-    std::string buffer(16384, 0); //Buffer as large as (I think) could possibly be necessary.
-    std::string newString; //Our result.
-
-    std::chrono::high_resolution_clock::time_point tp = std::chrono::high_resolution_clock::now();
-
     struct pollfd fd;
     fd.fd = connections[playerTag - 1];
     fd.events = POLLIN;
@@ -189,8 +187,6 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
         if(timeoutMillis < 0) {
             if(!quiet_output) {
                 std::string errorMessage = "Bot #" + std::to_string(playerTag) + " timed out.\n";
-
-                std::lock_guard<std::mutex> guard(coutMutex);
                 std::cout << errorMessage;
             }
             throw newString;
@@ -206,7 +202,7 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
             throw newString;
         }
         else if(pollResult != 0) {
-            int messageSize = recv(connections[playerTag - 1], buffer.data(), buffer.size(), 0);
+            int messageSize = recv(connections[playerTag - 1], buffer, BUF_SIZE, 0);
             if(messageSize <= 0 /*<0 indicates error, 0 indicates not connected; both are bad*/) {
                 if(!quiet_output) {
                     std::string errorMessage = "Bot #" + std::to_string(playerTag) + " error.\n";
@@ -217,10 +213,11 @@ std::string Networking::getString(unsigned char playerTag, unsigned int timeoutM
                 throw newString;
             }
             if(messageSize > 0) {
-                int firstNewline = buffer.find_first_of('\n');
-                if(firstNewline == std::string::npos || firstNewline >= messageSize) newString += buffer.substr(0, messageSize);
+                std::string bufStr(buffer);
+                int firstNewline = bufStr.find_first_of('\n');
+                if(firstNewline == std::string::npos || firstNewline >= messageSize) newString += bufStr.substr(0, messageSize);
                 else {
-                    newString += buffer.substr(0, firstNewline);
+                    newString += bufStr.substr(0, firstNewline);
                     break;
                 }
             }

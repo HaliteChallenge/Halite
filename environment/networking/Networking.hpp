@@ -22,6 +22,7 @@
 	#include <sys/types.h>
 	#include <sys/socket.h>
 	#include <sys/types.h>
+	#include <poll.h>
 #endif
 
 #include "../core/hlt.hpp"
@@ -51,7 +52,7 @@ private:
 	std::string serializeMap(const hlt::Map & map);
 	std::map<hlt::Location, unsigned char> deserializeMoveSet(std::string & inputString, const hlt::Map & m);
 
-	void sendString(unsigned char playerTag, std::string &sendString);
+	void sendString(unsigned char playerTag, std::string sendString);
 	std::string getString(unsigned char playerTag, unsigned int timoutMillis);
 };
 
