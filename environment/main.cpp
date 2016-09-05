@@ -9,14 +9,14 @@
 bool quiet_output = false; //Need to be passed to the game.
 Halite * my_game; //Is a pointer to avoid problems with assignment, dynamic memory, and default constructors.
 
-Networking promptNetworking();
+Networking promptNetworking(const int DEF_PORT_NO);
 void promptDimensions(unsigned short & w, unsigned short & h);
 
 int main(int argc, char ** argv) {
 	srand(time(NULL)); //For all non-seeded randomness.
 
-	bool watch_game = false, override_names = false; //Extra parameters. 
-	
+	bool watch_game = false, override_names = false; //Extra parameters.
+
 	//Paramters to start up a game.
 	bool passed_dimensions = false, passed_seed = false, passed_bot_names = false, ignore_timeout = false;
 	unsigned short mapWidth, mapHeight;
@@ -25,6 +25,7 @@ int main(int argc, char ** argv) {
 	std::vector<std::string> * names = NULL;
 	std::string * ppmFilename = NULL;
 	unsigned int id = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock().now().time_since_epoch()).count();
+	int DEFAULT_PORT_NO = 2000;
 
 	std::list<std::string> sArgs;
 	for(int a = 1; a < argc; a++) sArgs.push_back(argv[a]);
@@ -86,6 +87,18 @@ int main(int argc, char ** argv) {
 			ignore_timeout = true;
 			a = sArgs.erase(a);
 		}
+		else if(*a == "-p") {
+			a = sArgs.erase(a);
+			try {
+				if(a == sArgs.end()) throw 0;
+				DEFAULT_PORT_NO = std::stoll(*a);
+				a = sArgs.erase(a);
+			}
+			catch(...) {
+				std::cout << "The port parameter was either not present or invalid despite the flag having been given." << std::endl;
+				return EXIT_FAILURE;
+			}
+		}
 		else a++;
 	}
 
@@ -96,21 +109,30 @@ int main(int argc, char ** argv) {
 	if(override_names) {
 		if(sArgs.size() < 4 || sArgs.size() % 2 != 0) {
 			std::cout << "Invalid player parameters from argv. Prompting instead (override disabled):" << std::endl;
-			networking = promptNetworking();
+			networking = promptNetworking(DEFAULT_PORT_NO);
 		}
 		else {
 			try {
+				int portno = DEFAULT_PORT_NO;
 				names = new std::vector<std::string>();
 				while(!sArgs.empty()) {
-					networking.startAndConnectBot(sArgs.front());
+					try {
+						networking.startAndConnectBot(sArgs.front(), portno);
+					}
+					catch(int e) {
+						if(e == 2) { //Player did not connect.
+							continue; //Skip this player.
+						}
+					}
 					sArgs.pop_front();
 					names->push_back(sArgs.front());
 					sArgs.pop_front();
+					portno++;
 				}
 			}
 			catch(...) {
 				std::cout << "Invalid player parameters from argv. Prompting instead (override disabled):" << std::endl;
-				networking = promptNetworking();
+				networking = promptNetworking(DEFAULT_PORT_NO);
 				delete names;
 				names = NULL;
 			}
@@ -119,18 +141,19 @@ int main(int argc, char ** argv) {
 	else {
 		if(sArgs.size() < 2) {
 			std::cout << "Invalid player parameters from argv. Prompting instead:" << std::endl;
-			networking = promptNetworking();
+			networking = promptNetworking(DEFAULT_PORT_NO);
 		}
 		try {
+			int portno = DEFAULT_PORT_NO;
 			while(!sArgs.empty()) {
-				std::cout << sArgs.front() << std::endl;
-				networking.startAndConnectBot(sArgs.front());
+				networking.startAndConnectBot(sArgs.front(), portno);
 				sArgs.pop_front();
+				portno++;
 			}
 		}
 		catch(...) {
 			std::cout << "Invalid player parameters from argv. Prompting instead:" << std::endl;
-			networking = promptNetworking();
+			networking = promptNetworking(DEFAULT_PORT_NO);
 		}
 	}
 
@@ -163,9 +186,10 @@ int main(int argc, char ** argv) {
 	return 0;
 }
 
-Networking promptNetworking() {
+Networking promptNetworking(const int DEF_PORT_NO) {
 	Networking n;
 	std::string in;
+	int portno = DEF_PORT_NO;
 	bool done = false;
 	for(int np = 0; !done; np++) {
 		//If less than 2, bypass this step: Ask if the user like to add another AI
@@ -186,15 +210,16 @@ Networking promptNetworking() {
 			std::getline(std::cin, startCommand);
 
 			try{
-				n.startAndConnectBot(startCommand);
+				n.startAndConnectBot(startCommand, portno);
 				break;
 			}
-			catch (int e) {
+			catch(...) {
 				std::cout << "There was a problem with that start command. Please enter another one.\n";
 			}
 		}
 
 		std::cout << "Connected to player #" << int(np + 1) << std::endl;
+		portno++;
 	}
 	return n;
 }

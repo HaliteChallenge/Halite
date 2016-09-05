@@ -294,8 +294,14 @@ void Networking::startAndConnectBot(std::string command, int port) {
         connections.push_back(parentConnection);
     }
 #else
+    command += ' ' + std::to_string(port); //Add port arg.
     if(!quiet_output) std::cout << command << "\n";
 
+    //Kill all processes operating on the port that we want.
+    std::string killCmd = "kill -9 $(lsof -t -i:" + std::to_string(port) + ")";
+    /*int kill_result = system(killCmd.c_str());
+    std::cout << kill_result << std::endl;
+    assert(kill_result >= 0);*/
     //Create socket.
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     assert(sock >= 0);
@@ -306,14 +312,17 @@ void Networking::startAndConnectBot(std::string command, int port) {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(port);
+    std::string check_port = "lsof -i:" + std::to_string(port);
+    system(check_port.c_str());
     int adr_result = bind(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
-    assert(adr_result >= 0);
+    assert(adr_result == 0);
     //Set socket to non-blocking mode.
     int arg = fcntl(sock, F_GETFL, NULL);
     assert(arg >= 0);
     arg |= O_NONBLOCK;
     int bloc_result = fcntl(sock, F_SETFL, arg);
     assert(bloc_result >= 0);
+    listen(sock, SOMAXCONN);
     //Fork child process.
     int pid = fork();
     if(pid == 0) { //This is the child
@@ -334,6 +343,7 @@ void Networking::startAndConnectBot(std::string command, int port) {
     while(millisLeft >= 0) {
         if(accept(sock, (struct sockaddr *)&clien_addr, &clien_addr_len) >= 0) break;
         millisLeft -= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp).count();
+        tp = std::chrono::high_resolution_clock::now();
     }
     if(millisLeft < 0) {
         if(!quiet_output) std::cout << "Player did not connect.\n";
