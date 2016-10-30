@@ -14,3 +14,7 @@ RUN apt-get install -y python-software-properties
 RUN apt-get install -y software-properties-common
 RUN apt-get install -y openjdk-8-jdk
 RUN apt-get install -y scala
+
+RUN useradd -ms /bin/bash newuser
+USER newuser
+WORKDIR /home/newuser
