@@ -9,5 +9,6 @@ cd HaliteEnvironment-Source
 make
 #make install
 cd ../
+mkdir -p bin
 mv HaliteEnvironment-Source/halite ./bin/halite
 rm -r HaliteEnvironment-Source 
