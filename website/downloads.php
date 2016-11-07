@@ -32,7 +32,7 @@
                 <h2>Running the Environment</h2>
                 <h3>Linux/macOS</h3>
                 <p>After unpacking the Started Package, open your terminal and cd into the unzipped directory.  Run the install.sh script to download and install the environment.  Then you can execute the environment with ./bin/halite </p>
-                <pre><code>cd Halite-Python-Starter-Package;
+                <pre><code>cd Halite-Python-Starter-Package
                 ./install.sh
                 ./bin/halite -[some example arguments]</code></pre>
 
@@ -47,15 +47,11 @@
                 <h3>Linux/macOS</h3>
                 <p>Execute:</p>
                 <pre><code>sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/HaliteChallenge/Halite/master/environment/install.sh)"</code></pre>
-                <p>Now, the <code>halite</code> command will run the environment.</p>
+                <p>Now, the binary will be installed into ./bin/ and <code>./bin/halite</code> should work. </p>
 
                 <h3>Windows</h3>
                 <p>Download <a href="downloads/environment/halite.exe">halite.exe</a>.</p>
                 
-                <h3>Building from Source</h3>
-                <p>Extract <a href="downloads/environment/HaliteEnvironment-Source.zip">this archive</a>.</p>
-                <p>If you are on Unix, run <code>make</code> and <code>sudo make install</code> inside the extracted folder. The <code>halite</code> command will now run the environment.</p>
-                <p>If you are on Windows, run the "make.bat" file. The file named "halite.exe" is your new environment binary.</p>
             </div>
         </div>
     </div>
