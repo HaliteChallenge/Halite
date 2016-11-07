@@ -16,7 +16,7 @@
 
                 <h2>Starter Packages</h2>
                 <p>
-                    This set of starter packages was uploaded on November 6nd. We fixed a minor bug with the getDistance() method in the Python starter package.
+                    This set of starter packages was uploaded on November 6nd. We fixed a minor bug with the getDistance() method in the Python starter package.  These packages also contain the Game Environment.
                 </p>
                 <p>
                     <ul>
@@ -29,7 +29,19 @@
                     </ul>
                 </p>
 
+                <h2>Running the Environment</h2>
+                <h3>Linux/macOS</h3>
+                <p>After unpacking the Started Package, open your terminal and cd into the unzipped directory.  Run the install.sh script to download and install the environment.  Then you can execute the environment with ./bin/halite </p>
+                <pre><code>cd Halite-Python-Starter-Package;
+                ./install.sh
+                ./bin/halite -[some example arguments]</code></pre>
+
+                <h3>Windows</h3>
+        I'm not sure how to run it on windows?!
+                
+
                 <h2>Game Environment</h2>
+                <p>If you'd rather download the Game Environment separately you can.</p>
                 <p>The environment is on version <b>1.0</b>. This version of the environment was posted on November 2nd.</p>
 
                 <h3>Linux/macOS</h3>
