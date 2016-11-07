@@ -25,13 +25,18 @@ cp ../environment/install.sh Halite-Scala-Starter-Package/
 cp ../environment/install.sh Halite-C#-Starter-Package/
 
 # add halite.exe to all zip archives
-#TODO
 mkdir Halite-Python-Starter-Package/bin
 mkdir Halite-Java-Starter-Package/bin
 mkdir Halite-C++-Starter-Package/bin
 mkdir Halite-Rust-Starter-Package/bin
 mkdir Halite-Scala-Starter-Package/bin
 mkdir Halite-C#-Starter-Package/bin
+cp downloads/environment/halite.exe Halite-Python-Starter-Package/bin/
+cp downloads/environment/halite.exe Halite-Java-Starter-Package/bin/
+cp downloads/environment/halite.exe Halite-C++-Starter-Package/bin/
+cp downloads/environment/halite.exe Halite-Rust-Starter-Package/bin/
+cp downloads/environment/halite.exe Halite-Scala-Starter-Package/bin/
+cp downloads/environment/halite.exe Halite-C#-Starter-Package/bin/
 
 
 zip -r Halite-Python-Starter-Package.zip Halite-Python-Starter-Package/ 
