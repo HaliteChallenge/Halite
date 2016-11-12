@@ -17,9 +17,13 @@ executable MyBot
   main-is:           MyBot.hs
   default-language:  Haskell2010
   build-depends:     base >= 4.7 && < 5
+                   , halite-haskell
+                   , random
 
 executable RandomBot
   hs-source-dirs:    src
   main-is:           RandomBot.hs
   default-language:  Haskell2010
   build-depends:     base >= 4.7 && < 5
+                   , halite-haskell
+                   , random

@@ -6,6 +6,8 @@ module Halite.Networking
   ) where
 
 import Halite.Types
+import Data.List (zipWith5)
+import System.IO (hFlush, stdout)
 
 getInit :: IO (ID, Map)
 getInit = do
@@ -16,23 +18,28 @@ getInit = do
     return (userID, Map w h mapc)
 
 sendInit :: String -> IO ()
-sendInit = putStrLn
+sendInit s = putStrLn s >> hFlush stdout
 
 getFrame :: Map -> IO Map
 getFrame (Map w h cont) =
     Map w h . parseMapContents (w, h) (getProds cont) <$> getLine
 
+sendFrame' :: [Move] -> IO ()
+sendFrame' = putStrLn . unwords . map showMove
+
 sendFrame :: [Move] -> IO ()
-sendFrame = putStrLn . unwords . map showMove
+sendFrame s = sendFrame' s >> hFlush stdout
 
 
 parseMapContents :: (Int, Int) -> [Int] -> String -> [[Site]]
-parseMapContents (w, h) pds s = splitEvery w $ zipWith3 Site ons sts pds
+parseMapContents (w, h) pds s = splitEvery w $ zipWith5 Site ons sts pds xs ys
   where
     (owners, sts) = splitMapContents (read <$> words s) (w * h)
     ons = stretch owners
-    stretch (x:y:ys) = replicate x y ++ stretch ys
+    stretch (a:b:bs) = replicate a b ++ stretch bs
     stretch [] = []
+    xs = concat $ replicate h [0..w - 1]
+    ys = concatMap (replicate w) [0..h - 1]
 
 splitMapContents :: [Int] -> Int -> ([Int], [Int])
 splitMapContents xs area = splitAt (length xs - area) xs
@@ -47,5 +54,5 @@ getProds :: [[Site]] -> [Int]
 getProds = map siteProduction . concat
 
 showMove :: Move -> String
-showMove (Move (Location x y) d) =
+showMove (Move x y d) =
     show x ++ " " ++ show y ++ " " ++ show (fromEnum d)
