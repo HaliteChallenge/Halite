@@ -1,28 +1,27 @@
 module Main where
 
+import System.Random (getStdGen)
 import Halite
-import System.Random (randomRs, getStdGen, StdGen)
 
 main :: IO ()
-main = do
-    (myID, gameMap) <- getInit
-    sendInit "RandomHaskellBot"
-    dirs <- randomDirections <$> getStdGen
-    loop myID gameMap dirs
+main = communicate name algorithm runEffects <$> getStdGen
 
-loop :: ID -> Map -> [Direction] -> IO ()
-loop myID gameMap dirs = do
-    gameMap' <- getFrame gameMap
-    let sites = concat $ mapContents gameMap'
-        moves = assignMoves myID sites dirs
-        dirs' = drop (length moves) dirs
-    sendFrame moves
-    loop myID gameMap' dirs'
+name = "Awesome Haskell Bot"
 
-assignMoves :: ID -> [Site] -> [Direction] -> [Move]
-assignMoves myID sites = zipWith3 Move (map siteX sites') (map siteY sites')
-  where
-    sites' = filter (\s -> siteOwner s == myID) sites
+algorithm :: RandomReader m => ID -> Map -> m [Move]
+algorithm me g@(GameMap width height sites) =
+   randomMoves
+      [Location x y | x <- [1..width], y <- [1..height]] $
+      fmap (isMy me) sites
 
-randomDirections :: StdGen -> [Direction]
-randomDirections g = toEnum <$> randomRs (0, 4) g
+randomMoves :: RandomReader m => [Location] -> [Bool] -> m [Move]
+randomMoves l = traverse randMove . filter' l
+   where
+      filter' :: [a] -> [Bool] -> [a]
+      filter' [] [] = []
+      filter' (a:as) (True:bs)  = a : filter' as bs
+      filter' (_:as) (False:bs) = filter' as bs
+      randMove :: RandomReader r => Location -> r Move
+      randMove location = do
+         direction <- toEnum <$> randR 5
+         return $ Move location direction
