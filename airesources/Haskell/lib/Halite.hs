@@ -1,7 +1,7 @@
 module Halite
-    ( module Halite.Types
-    , module Halite.Networking
+    ( module M
     ) where
 
-import Halite.Types
-import Halite.Networking
+import Halite.Networking as M
+import Halite.Classes as M
+import Halite.Types as M

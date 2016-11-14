@@ -1,13 +1,28 @@
 module Halite.Networking
-  ( getInit
-  , sendInit
-  , getFrame
-  , sendFrame
+  ( communicate
   ) where
 
 import Halite.Types
 import Data.List (zipWith5)
+import System.Random (getStdGen)
 import System.IO (hFlush, stdout)
+
+communicate
+   :: Monad m
+   => String
+   -> (ID -> Map -> m [Move])
+   -> a -> (m [Move] -> a -> ([Move], a))
+   -> IO ()
+communicate name algorithm input runMonad = do
+    (myID, gameMap) <- getInit
+    sendInit name
+    loop (algorithm myID) gameMap input runMonad
+
+loop algorithm gameMap input runMonad = do
+   gameMap' <- getFrame gameMap
+   let (moves, input') = runMonad (algorithm gameMap') input
+   sendFrame moves
+   loop algorithm gameMap' input' runMonad
 
 getInit :: IO (ID, Map)
 getInit = do
@@ -32,7 +47,7 @@ sendFrame s = sendFrame' s >> hFlush stdout
 
 
 parseMapContents :: (Int, Int) -> [Int] -> String -> [[Site]]
-parseMapContents (w, h) pds s = splitEvery w $ zipWith5 Site ons sts pds xs ys
+parseMapContents (w, h) pds s = splitEvery w $ zipWith5 Site ons sts pds locations
   where
     (owners, sts) = splitMapContents (read <$> words s) (w * h)
     ons = stretch owners
@@ -40,6 +55,7 @@ parseMapContents (w, h) pds s = splitEvery w $ zipWith5 Site ons sts pds xs ys
     stretch [] = []
     xs = concat $ replicate h [0..w - 1]
     ys = concatMap (replicate w) [0..h - 1]
+    locations = zipWith Location xs ys
 
 splitMapContents :: [Int] -> Int -> ([Int], [Int])
 splitMapContents xs area = splitAt (length xs - area) xs
@@ -54,5 +70,5 @@ getProds :: [[Site]] -> [Int]
 getProds = map siteProduction . concat
 
 showMove :: Move -> String
-showMove (Move x y d) =
+showMove (Move (Location x y) d) =
     show x ++ " " ++ show y ++ " " ++ show (fromEnum d)
