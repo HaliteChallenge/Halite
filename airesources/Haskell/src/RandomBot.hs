@@ -25,7 +25,7 @@ randomMoves l = traverse randMove . filter' l
       filter' (_:as) (False:bs) = filter' as bs
       randMove :: RandomReader r => Location -> r Move
       randMove location = do
-         direction <- toEnum <$> rand 5
+         direction <- toEnum <$> rand 4
          return $ Move location direction
 
 ownedBy :: ID -> Site -> Bool
