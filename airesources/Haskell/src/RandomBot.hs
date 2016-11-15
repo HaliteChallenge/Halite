@@ -13,8 +13,12 @@ name = "Awesome Haskell Bot"
 algorithm :: RandomReader m => ID -> Map -> m [Move]
 algorithm me (Map width height sites) =
    randomMoves
-      [Location x y | x <- [0..width-1], y <- [0..height-1]] $
+      locations $
       fmap (ownedBy me) (concat sites)
+  where
+    xs = concat $ replicate height [0 .. width - 1]
+    ys = concatMap (replicate width) [0 .. height - 1]
+    locations = zipWith Location xs ys
 
 randomMoves :: RandomReader m => [Location] -> [Bool] -> m [Move]
 randomMoves l = traverse randMove . filter' l
