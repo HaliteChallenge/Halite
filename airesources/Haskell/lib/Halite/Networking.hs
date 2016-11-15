@@ -70,5 +70,4 @@ getProds :: [[Site]] -> [Int]
 getProds = map siteProduction . concat
 
 showMove :: Move -> String
-showMove (Move (Location x y) d) =
-    show x ++ " " ++ show y ++ " " ++ show (fromEnum d)
+showMove (Move (Location x y) d) = unwords $ map show [x, y, fromEnum d]
