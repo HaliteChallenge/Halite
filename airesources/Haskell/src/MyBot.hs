@@ -4,15 +4,17 @@ import System.Random (getStdGen)
 import Halite
 
 main :: IO ()
-main = communicate name algorithm runEffects <$> getStdGen
+main = do
+    input <- getStdGen
+    communicate name algorithm input runEffects
 
 name = "Awesome Haskell Bot"
 
 algorithm :: RandomReader m => ID -> Map -> m [Move]
-algorithm me g@(GameMap width height sites) =
+algorithm me (Map width height sites) =
    randomMoves
       [Location x y | x <- [1..width], y <- [1..height]] $
-      fmap (isMy me) sites
+      fmap (ownedBy me) (concat sites)
 
 randomMoves :: RandomReader m => [Location] -> [Bool] -> m [Move]
 randomMoves l = traverse randMove . filter' l
@@ -23,5 +25,8 @@ randomMoves l = traverse randMove . filter' l
       filter' (_:as) (False:bs) = filter' as bs
       randMove :: RandomReader r => Location -> r Move
       randMove location = do
-         direction <- toEnum <$> randR 5
+         direction <- toEnum <$> rand 5
          return $ Move location direction
+
+ownedBy :: ID -> Site -> Bool
+ownedBy userID site = siteOwner site == userID
