@@ -10,7 +10,7 @@ name = "Awesome Haskell Bot"
 
 algorithm :: RandomReader m => ID -> Map -> m [Move]
 algorithm me g@(Map width height sites) =
-   randomMoves $ filter ( \s -> siteOwner s == me ) (concat sites)
+   randomMoves $ filter ((== me) . siteOwner) (concat sites)
 
 randomMoves :: RandomReader m => [Site] -> m [Move]
 randomMoves = traverse $ randMove . siteLocation

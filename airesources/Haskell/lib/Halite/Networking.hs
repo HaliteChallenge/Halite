@@ -48,14 +48,15 @@ sendFrame s = sendFrame' s >> hFlush stdout
 
 
 parseMapContents :: (Int, Int) -> [Int] -> String -> [[Site]]
-parseMapContents (w, h) pds s = splitEvery w $ zipWith4 Site ons sts pds locations
+parseMapContents (w, h) productions s =
+    splitEvery w $ zipWith4 Site owners strengths productions locations
   where
-    (owners, sts) = splitMapContents (read <$> words s) (w * h)
-    ons = stretch owners
+    (owners', strengths) = splitMapContents (read <$> words s) (w * h)
+    owners = stretch owners'
     stretch (a:b:bs) = replicate a b ++ stretch bs
     stretch [] = []
-    xs = concat $ replicate h [0..w - 1]
-    ys = concatMap (replicate w) [0..h - 1]
+    xs = concat $ replicate h [0 .. w - 1]
+    ys = concatMap (replicate w) [0 .. h - 1]
     locations = zipWith Location xs ys
 
 splitMapContents :: [Int] -> Int -> ([Int], [Int])
@@ -71,5 +72,4 @@ getProds :: [[Site]] -> [Int]
 getProds = map siteProduction . concat
 
 showMove :: Move -> String
-showMove (Move (Location x y) d) =
-    show x ++ " " ++ show y ++ " " ++ show (fromEnum d)
+showMove (Move (Location x y) d) = unwords $ map show [x, y, fromEnum d]
