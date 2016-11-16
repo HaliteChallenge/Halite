@@ -11,9 +11,10 @@ communicate
    :: Monad m
    => String
    -> (ID -> Map -> m [Move])
-   -> a -> (m [Move] -> a -> ([Move], a))
+   -> (m [Move] -> a -> ([Move], a))
+   -> a
    -> IO ()
-communicate name algorithm input runMonad = do
+communicate name algorithm runMonad input = do
     (myID, gameMap) <- getInit
     sendInit name
     loop (algorithm myID) gameMap input runMonad

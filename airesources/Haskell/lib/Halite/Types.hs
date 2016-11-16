@@ -7,8 +7,8 @@ module Halite.Types
   , Site(..)
   , Move(..)
   , ID
-  , Effects(..)
-  , Test(..)
+  , Effects(runEffects) -- you don't want to export constructor
+  , Test(runTest)
   ) where
 
 
@@ -64,7 +64,7 @@ instance Monad Effects where
         in runEffects (k a) s'
 
 instance RandomReader Effects where
-   rand i = Effects $ randomR (0, i)
+   rand i = Effects $ randomR (0, i-1)
 
 data Test a = Test {runTest :: [Int] -> (a, [Int])}
    deriving (Functor)
