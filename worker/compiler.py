@@ -250,12 +250,10 @@ comp_args = {
     "C++"         : [["g++", "-O3", "-w", "-std=c++11", "-c"],
                              ["g++", "-O2", "-lm", "-std=c++11", "-o", BOT]],
     "D"             : [["dmd", "-O", "-inline", "-release", "-noboundscheck", "-of" + BOT]],
-    "Go"            : [["6g", "-o", "_go_.6"],
-                             ["6l", "-o", BOT, "_go_.6"]],
     "Groovy"    : [["groovyc"],
                              ["jar", "cfe", BOT + ".jar", BOT]],
     "Haskell" : [["ghc", "--make", BOT + ".hs", "-O", "-v0"]],
-    "Java"        : [["javac", "-J-Xmx%sm" % (MEMORY_LIMIT)]],
+    "Java"        : [["javac", "-encoding", "UTF-8", "-J-Xmx%sm" % (MEMORY_LIMIT)]],
     "Lisp"      : [['sbcl', '--dynamic-space-size', str(MEMORY_LIMIT), '--script', BOT + '.lisp']],
     "OCaml"     : [["ocamlbuild -lib unix", BOT + ".native"]],
     "Pascal"    : [["fpc", "-Mdelphi", "-Si", "-O3", "-Xs", "-v0", "-o" + BOT]],
@@ -331,11 +329,10 @@ languages = (
         ["*.beam"],
         [(["*.erl"], ExternalCompiler(["erlc"], out_ext=".beam"))]
     ),
-    Language("Go", BOT, "MyBot.go",
-        "./MyBot",
-        ["*.8", "*.6", BOT],
-        [(["*.go"], ExternalCompiler(comp_args["Go"][0], out_files=['_go_.6'])),
-            ([""], ExternalCompiler(comp_args["Go"][1], out_files=['_go_.6']))]
+    Language("Go", BOT +".go", "MyBot.go",
+        "export GOPATH=\"$(pwd)\"; go run MyBot.go",
+        [],
+        [(["*.go"], ChmodCompiler("Go"))]
     ),
     Language("Groovy", BOT +".jar", "MyBot.groovy",
         "java -Xmx" + str(MEMORY_LIMIT) + "m -cp MyBot.jar:/usr/share/groovy/embeddable/groovy-all-1.7.5.jar MyBot",
@@ -351,7 +348,7 @@ languages = (
     Language("Java", BOT +".java", "MyBot.java",
         "java MyBot",
         ["*.class", "*.jar"],
-        [(["*.java"], ErrorFilterCompiler(comp_args["Java"][0], filter_stderr="Note:"))]
+        [(["*.java"], ErrorFilterCompiler(comp_args["Java"][0], filter_stderr="Note:", out_files=["MyBot.class"]))]
     ),
     Language("Javascript", BOT +".js", "MyBot.js",
         "node MyBot.js",
