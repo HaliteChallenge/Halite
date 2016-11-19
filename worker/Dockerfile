@@ -30,4 +30,5 @@ RUN gem install bundler
 
 RUN apt-get install -y golang
 
-RUN apt-get install -y ghc
+RUN curl -sSL https://get.haskellstack.org/ | sh
+RUN stack setup
