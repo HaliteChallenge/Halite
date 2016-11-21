@@ -66,3 +66,24 @@ UC Santa Cruz - ucsc.edu
 UT San Antonio - utsa.edu
 UT San Antonio - my.utsa.edu
 UC Davis - ucdavis.edu
+Exeter College - exe-coll.ac.uk
+Quantworks - quantworks.com
+Epitech - epitech.eu
+IST - tecnico.ulisboa.pt
+Amazon - amazon.de
+Amazon - amazon.com
+Academy for Science and Design - asdnh.org
+KTH - kth.se
+Horace Mann - horacemann.org
+Shaw - shaw.ca
+Futurice - futurice.com
+Seznam - seznam.cz
+Boopsie - boopsie.com
+HCM - hubcitymedia.com
+Paderborn University - mail.upb.de
+Technical University of Dresden - tu-dresden.de
+Altassian - atlassian.com
+Asimmetric - asimmetric.com
+Binghamton - binghamton.edu
+National Research University - edu.hse.ru
+Proekspert - proekspert.ee

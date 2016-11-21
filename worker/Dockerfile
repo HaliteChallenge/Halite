@@ -11,7 +11,7 @@ RUN apt-get install -y g++
 
 RUN apt-get install -y python3 python3-pip python3-dev python3-numpy
 
-RUN curl -sSf https://static.rust-lang.org/rustup.sh | sh 
+RUN curl -sSf https://static.rust-lang.org/rustup.sh | sh
 
 RUN apt-get install -y python-software-properties
 
@@ -30,7 +30,10 @@ RUN gem install bundler
 
 RUN apt-get install -y golang
 
-RUN curl -sSL https://get.haskellstack.org/ | sh
-RUN stack update
-RUN stack upgrade
-RUN stack setup
+RUN apt-get install -y php
+
+RUN apt-get install -y build-essential
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
+RUN apt-get install -y nodejs
+
+RUN apt-get install -y ocaml

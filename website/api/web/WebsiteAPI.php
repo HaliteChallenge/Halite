@@ -193,7 +193,7 @@ class WebsiteAPI extends API{
             $this->insert("UPDATE User SET email='".$this->mysqli->real_escape_string($_GET['newEmail'])."', verificationCode = '{$verificationCode}' WHERE userID = {$user['userID']}");
             $user["email"] = $_GET["newEmail"];
 
-            $this->sendNotification($user, "Email Verification", "<p>Click <a href='".WEB_DOMAIN."api/web/email?verificationCode=$verificationCode'>here</a> to verify your email address.</p>", 0, false);
+            $this->sendNotification($user, "Email Verification", "<p>Click <a href='".WEB_DOMAIN."api/web/email?verificationCode=$verificationCode'>here</a> to verify your email address.</p>", 0, false, true);
         } else if(isset($_GET['verificationCode'])) {
             if($user == null) {
                 $emailCallbackURL = urlencode(WEB_DOMAIN."api/web/email?".$_SERVER['QUERY_STRING']);
@@ -273,25 +273,14 @@ class WebsiteAPI extends API{
             $userID = intval($_GET['userID']);
             $versionNumber = isset($_GET['versionNumber']) ? intval($_GET['versionNumber']) : $this->select("SELECT numSubmissions FROM User WHERE userID=$userID")['numSubmissions']; 
 
-            $gameIDArrays = $this->selectMultiple("SELECT gameID FROM GameUser WHERE userID = $userID and versionNumber = $versionNumber and gameID < $startingID ORDER BY gameID DESC LIMIT $limit");
-            $gameArrays = array();
+            $gameArrays = $this->selectMultiple("SELECT g.* FROM GameUser gu INNER JOIN Game g ON g.gameID = gu.gameID WHERE gu.userID = $userID and gu.versionNumber = $versionNumber and gu.gameID < $startingID ORDER BY gu.gameID DESC LIMIT $limit");
 
             // Get each game's info
-            foreach ($gameIDArrays as $gameIDArray) {
-                $gameID = $gameIDArray['gameID'];
-                $gameArray = $this->select("SELECT * FROM Game WHERE gameID = $gameID");
+            foreach ($gameArrays as &$gameArray) {
+                $gameID = $gameArray['gameID'];
 
                 // Get information about users
-                $gameArray['users'] = $this->selectMultiple("SELECT userID, errorLogName, rank FROM GameUser WHERE gameID = $gameID");
-                foreach($gameArray['users'] as &$gameUserRow) {
-                    // Get rid of gameID
-                    unset($gameUserRow['gameID']);
-
-                    // Add in user info
-                    $userInfo = $this->select("SELECT username, oauthID FROM User WHERE userID = {$gameUserRow['userID']}");
-                    foreach($userInfo as $key => $value) $gameUserRow[$key] = $value;
-                }
-                array_push($gameArrays, $gameArray);
+                $gameArray['users'] = $this->selectMultiple("SELECT gu.userID, gu.errorLogName, gu.rank, u.username, u.oauthID FROM GameUser gu INNER JOIN User u ON u.userID=gu.userID WHERE gu.gameID = $gameID");
             }
             return $gameArrays;
         } 
@@ -449,7 +438,7 @@ class WebsiteAPI extends API{
      */
     protected function errorLog() {
         // Return the requested error log only if it belongs to the signed in user.
-        if(isset($_GET['errorLogName']) && count($this->select("SELECT * FROM GameUser WHERE errorLogName='{$_GET['errorLogName']}' and userID={$_SESSION['userID']}"))) {
+        if(isset($_GET['errorLogName']) && isset($_SESSION['userID']) && count($this->select("SELECT * FROM GameUser WHERE errorLogName='{$_GET['errorLogName']}' and userID={$_SESSION['userID']}"))) {
             $result = $this->loadAwsSdk()->createS3()->getObject([
                 'Bucket' => ERROR_LOG_BUCKET,
                 'Key'    => $_GET['errorLogName']
@@ -464,6 +453,7 @@ class WebsiteAPI extends API{
             echo $result['Body'];
             die();
         }
+        return "You aren't logged into your Halite account or are trying to access the error log of another contestant.";
     }
     
     /* Session Endpoint
