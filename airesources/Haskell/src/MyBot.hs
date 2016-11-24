@@ -19,5 +19,3 @@ randomMoves = traverse $ randMove . siteLocation
          direction <- toEnum <$> rand 5
          return $ Move location direction
 
-ownedBy :: ID -> Site -> Bool
-ownedBy userID site = siteOwner site == userID
