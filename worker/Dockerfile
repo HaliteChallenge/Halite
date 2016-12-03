@@ -39,3 +39,5 @@ RUN chmod a+x /usr/bin/lein
 RUN lein
 
 RUN pip3 install virtualenv 
+
+RUN apt-get install -y git
