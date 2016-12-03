@@ -18,7 +18,7 @@
                 <h1>Game Server Reference</h1>
 
                 <h3>Hardware</h3>
-                <p>All compilation and game execution is done on AWS EC2 t2.small servers running Ubuntu. They have the following specs:
+                <p>All compilation and game execution is done on AWS EC2 m3.medium servers running Ubuntu 16.04. They have the following specs:
                     <ul>
                         <li>3.5 GB of RAM</li>
                         <li>~10 GB of disk space</li>
@@ -47,6 +47,7 @@
                             <li>JavaScript - .js</li>
                             <li>OCaml - .ml</li>
                             <li>Clojure - .clj</li>
+                            <li>C - .c</li>
                         </ul>
                     </p>
 
@@ -54,10 +55,11 @@
                         The following compilers are used:
                         <ul>
                             <li>Java - javac 1.8.0_111</li>
-                            <li>C++ - g++ 4.84</li>
+                            <li>C++ - g++ 4.8</li>
                             <li>C# - mcs 4.6.1.0</li>
                             <li>Rust - rustc 1.10.0</li>
                             <li>Scala - scalac 2.10.4</li>
+                            <li>C - gcc 4.8</li>
                         </ul>
                     </p>
 
