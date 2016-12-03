@@ -33,7 +33,10 @@ install:
 
   - export CXX="g++-4.9"
 
+  - java
+
 script:
+  - java
   - cd ~/build/HaliteChallenge/Halite/tests/
   - sudo ./runTests.sh
 
