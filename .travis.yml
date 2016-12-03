@@ -7,6 +7,9 @@ language: cpp
 services: 
   - mysql
 
+jdk:
+    - oraclejdk8
+
 addons:
   apt:
     packages:
