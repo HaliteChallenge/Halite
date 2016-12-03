@@ -509,8 +509,9 @@ def compile_anything(bot_dir, installTimeLimit=600, timelimit=600, max_error_len
             print("filename:")
             print(run_filename)
             try:
-                with open(run_filename, 'wb') as f:
-                    f.write(bytes('#%s\n%s\n' % (name, run_cmd), 'UTF-8'))
+                if os.path.isfile(run_filename) == False:
+                    with open(run_filename, 'wb') as f:
+                        f.write(bytes('#%s\n%s\n' % (name, run_cmd), 'UTF-8'))
                 print("file:")
                 with open(run_filename, 'r') as f:
                     for line in f:
