@@ -46,7 +46,6 @@
     </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.83/jsrender.min.js"></script>
     <script src="script/backend.js"></script>
     <script src="script/email.js"></script>
 </body>
