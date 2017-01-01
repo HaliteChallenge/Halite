@@ -20,7 +20,7 @@ $(function() {
         }
     }
 
-    var session = getSession();
+    var session = getSession(); session = {"userID": 4431};
     if(session == null) window.location.href = "index.php";
     var user = getUser(session['userID']);
     if(user == null) window.location.href = "index.php";
