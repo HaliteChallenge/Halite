@@ -33,8 +33,8 @@ $(function() {
         user.email = email;
         render(user);
     });
-    githubSubmitButton.init(function() {
-        validateEmail(email);
+    githubSubmitButton.init(user.githubEmail, function() {
+        validateEmail();
         window.location.href = "index.php";
     });
 });
