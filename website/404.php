@@ -17,7 +17,7 @@
                 <div class="col-sm-12">
                     <h1>404 Error</h1>
                     <h4>You might want to head back to the <a href="/index.php">homepage</a>.</h4>
-                    <h4>The page you were looking for doesn't exist. If you think that there's a problem with our site, please email us at halite@halite.io or post on the <a href="http://forums.halite.io">forums</a>.</h4>
+                    <h4>The page you were looking for doesn't exist. If you think that there's a problem with our site, please email us at halite@halite.io or post on the <a href="http://2016.forums.halite.io">forums</a>.</h4>
                 </div>
             </div>
         </div>

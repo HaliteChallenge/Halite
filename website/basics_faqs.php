@@ -76,7 +76,7 @@
                 <h2>Other</h2>
 
                 <h3>I cannot find an answer to my question, what do I do?</h3>
-                <p>Please check/post on the <a href="http://forums.halite.io">Halite forums</a> or contact-us at <a href="mailto:halite@halite.io">halite@halite.io</a>.
+                <p>Please check/post on the <a href="http://2016.forums.halite.io">Halite forums</a> or contact-us at <a href="mailto:halite@halite.io">halite@halite.io</a>.
 
             </div>
         </div>

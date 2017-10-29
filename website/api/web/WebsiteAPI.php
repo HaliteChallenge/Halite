@@ -48,19 +48,19 @@ class WebsiteAPI extends API{
     
     // Gets the id of one of our users in the discourse forums system
     private function getForumsID($userID) {
-        $url = "http://forums.halite.io/users/by-external/{$userID}.json/?".http_build_query(array('api_key' => $this->config['forums']['apiKey'], 'api_username' => $this->config['forums']['apiUsername']));
+        $url = "http://2016.forums.halite.io/users/by-external/{$userID}.json/?".http_build_query(array('api_key' => $this->config['forums']['apiKey'], 'api_username' => $this->config['forums']['apiUsername']));
         $contents = file_get_contents($url);
         return intval(json_decode($contents, true)['user']['id']);
     }
     
-    // Log a users out of forums.halite.io
+    // Log a users out of 2016.forums.halite.io
     private function logOutForums($forumsID) {
         $options = array('http' => array(
             'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
             'method'  => 'POST',
             'content' => http_build_query(array('api_key' => $this->config['forums']['apiKey'], 'api_username' => $this->config['forums']['apiUsername']))
         ));
-        file_get_contents("http://forums.halite.io/admin/users/{$forumsID}/log_out", false, stream_context_create($options));
+        file_get_contents("http://2016.forums.halite.io/admin/users/{$forumsID}/log_out", false, stream_context_create($options));
     }
 
     private function isLoggedIn() {
@@ -376,7 +376,7 @@ class WebsiteAPI extends API{
     
     /* Forums Endpoint
      *
-     * Handle the Discourse forums (forums.halite.io) single sign on authentication.
+     * Handle the Discourse forums (2016.forums.halite.io) single sign on authentication.
      */
     protected function forums() {
         // Follows the Discource sso detailed here: https://meta.discourse.org/t/official-single-sign-on-for-discourse/13045

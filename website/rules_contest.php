@@ -26,7 +26,7 @@
 
                 <h3>Bug Reports</h3>
                 <p>If you find a bug that is exploitable, email us at <a href="mailto:halite@halite.io">halite@halite.io</a>, do not post it on the forums, and do not exploit it.</p>
-                <p>Otherwise, feel free to let us know on <a href="http://forums.halite.io">the forums</a>.</p>
+                <p>Otherwise, feel free to let us know on <a href="http://2016.forums.halite.io">the forums</a>.</p>
 
                 <h3>Rankings</h3>
                 <p>Rankings are based on the outcome of organized games where bots play against each other. A good analogy is the <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo rating system</a> used for chess.</p>

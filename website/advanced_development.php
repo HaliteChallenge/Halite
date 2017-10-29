@@ -23,7 +23,7 @@
                 <h3>Disabling the Timeout Flag</h3>
                 <p>When debugging latency issues with your bot, it can be helpful to disable game environment timeouts. To do so, append the <code>-t</code> flag to your environment command (e.g. <code>./environment -d "30 30" "python3 MyBot.py" "python3 RandomBot.py" -t</code>).</p>
                 <h3>Debugging with an IDE</h3>
-                <p>There is a community contributed method for running a Halite bot from a custom debugger locally. More on this can be found <a href="http://forums.halite.io/t/running-your-halite-bot-from-a-debugger/70">here on the forums</a>. </p>
+                <p>There is a community contributed method for running a Halite bot from a custom debugger locally. More on this can be found <a href="http://2016.forums.halite.io/t/running-your-halite-bot-from-a-debugger/70">here on the forums</a>. </p>
             </div>
         </div>
         <?php include 'includes/footer.php'; ?>

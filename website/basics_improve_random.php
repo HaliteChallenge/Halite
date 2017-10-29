@@ -80,8 +80,8 @@
 
                 <h3>What's Next?</h3>
                 <p>That's really up to you! How you improve your bot from here is where you step into the competition.</p>
-                <p>That said, if you're looking for more ideas or a stronger starting base, <a href="https://halite.io/user.php?userID=2697">nmalaguti</a> wrote <a href="http://forums.halite.io/t/so-youve-improved-the-random-bot-now-what/482">a tutorial</a> that walks you through improving your combat, piece management, and expansion.</p>
-                <p>If you're interested in machine learning, Two Sigma's own <a href="https://halite.io/user.php?userID=1669">Brian van Leeuwen</a> authored <a href="http://forums.halite.io/t/ml-starter-bot-tutorial/616">an introductory deep learning tutorial</a>.</p>
+                <p>That said, if you're looking for more ideas or a stronger starting base, <a href="https://halite.io/user.php?userID=2697">nmalaguti</a> wrote <a href="http://2016.forums.halite.io/t/so-youve-improved-the-random-bot-now-what/482">a tutorial</a> that walks you through improving your combat, piece management, and expansion.</p>
+                <p>If you're interested in machine learning, Two Sigma's own <a href="https://halite.io/user.php?userID=1669">Brian van Leeuwen</a> authored <a href="http://2016.forums.halite.io/t/ml-starter-bot-tutorial/616">an introductory deep learning tutorial</a>.</p>
                 <p>Good luck!</p>
 
             </div>
