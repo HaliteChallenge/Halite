@@ -48,7 +48,7 @@ if(isset($_SESSION['userID'])) {
                     <div id="intro_blurb">
                         <h1>The official Halite Competition is over!</h1>
                         <p>Halite's final rankings closed on February 16, 2017. Thank you to our 1500+ competitors!</p>
-                        <p>Congratulations to mzotkiew, Halite's winner. Congrats also to the rest of the top 10: shummie, erdman, timfoden, curbin, PeppiKokki, DexGroves, nmalaguti, moonbirth, and ewirkerman. You can see some of their post-mortems and bot source code <a href="http://2016.forums.halite.io/t/published-bot-source-code/987/11">here</a>.</p>
+                        <p>Congratulations to mzotkiew, Halite's winner. Congrats also to the rest of the top 10: shummie, erdman, timfoden, curbin, PeppiKokki, DexGroves, nmalaguti, moonbirth, and ewirkerman. You can see some of their post-mortems and bot source code <a href="http://2016.forums.halite.io/t/published-bot-source-code/987">here</a>.</p>
                         <p>Two Sigma plans to release another programming competition in the future. Stay tuned!</p>
                         <h1>Halite is an artificial intelligence programming challenge.</h1>
                         <p>Players control a bot using the programming language of their choice. Bots fight for control of a 2D grid. The bot with the most territory at the end wins. Victory will require micromanaging of the movement of your pieces, optimizing your bot's combat ability, and braving a branching factor billions of times higher than that of Go.</p>
