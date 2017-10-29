@@ -42,7 +42,7 @@
                 <p>Rankings are based on the outcome of organized games where bots play against each other. A good analogy is the <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo rating system</a> used for chess.<br>More precisely, rankings are computed using a Bayesian algorithm variant of the <a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko system</a>, specifically using the TrueSkill Python library available <a href="https://github.com/sublee/trueskill">here</a>.</p>
 
                 <h3>How are the winners decided?</h3>
-                <p>Winners are simply the highest ranked players on the <a href="https://halite.io/leaderboard.php">leaderboard</a> at the end of the competition. So, submit early and often!</p>
+                <p>Winners are simply the highest ranked players on the <a href="https://2016.halite.io/leaderboard.php">leaderboard</a> at the end of the competition. So, submit early and often!</p>
 
                 <h3>Is there a prize for the winners?</h3>
                 <p>Pride! Bragging rights! Internet royalty!<br>The results of the competition will be officially announced with a link to best players Github profiles.</p>
@@ -60,7 +60,7 @@
                 <p>Yes. Halite is a programming competition. You need to program a bot that will play the game in the Halite tournament.<br>However, you definitely don’t have to be a very good programmer to play Halite effectively. Success is more about coming up with a good strategy to play the game than coding this strategy expertly.</p>
 
                 <h3>What languages does the game support?</h3>
-                <p>Any and all! If the language can read from stdin and print to stdout, we can support it.<br>We provide out-of-the-box starter packages for the following languages: Python, Java and C++. See <a href="https://halite.io/downloads.php">here</a> for our growing list of starter packages.<br>We’re counting on the community to add support for as many languages as people want. Visit <a href="https://halite.io/advanced_writing_sp.php">this page</a> for more information on writing your own starter package and the protocol used by the game environment to talk to your bot.
+                <p>Any and all! If the language can read from stdin and print to stdout, we can support it.<br>We provide out-of-the-box starter packages for the following languages: Python, Java and C++. See <a href="https://2016.halite.io/downloads.php">here</a> for our growing list of starter packages.<br>We’re counting on the community to add support for as many languages as people want. Visit <a href="https://2016.halite.io/advanced_writing_sp.php">this page</a> for more information on writing your own starter package and the protocol used by the game environment to talk to your bot.
 
                 <h3>How do I submit my bot?</h3>
                 <p>To submit your bot, you'll first need to zip your source code. Then, after signing in, click the "Submit" button on the top-right part of the page. Then, simply select your zipped source code to submit.</p>

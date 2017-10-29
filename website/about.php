@@ -14,7 +14,7 @@
             <div class="col-sm-12">
                 <h1>About Halite</h1>
 
-                <p><a href="https://halite.io/">Halite</a> is a programming game where players build smart bots that battle head-to-head with the goal of taking over the largest share of a virtual grid. Bots use their strength to gain territory, and their territory to gain strength—outmaneuvering opponents based on the relative sophistication of their code.</p>
+                <p><a href="https://2016.halite.io/">Halite</a> is a programming game where players build smart bots that battle head-to-head with the goal of taking over the largest share of a virtual grid. Bots use their strength to gain territory, and their territory to gain strength—outmaneuvering opponents based on the relative sophistication of their code.</p>
 
                 <p><i>The general who wins the battle makes many calculations in his temple before the battle is fought –Sun Tzu</i></p>
 

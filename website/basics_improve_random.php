@@ -19,7 +19,7 @@
 
                 <p>The code in this tutorial can be found at the following links for <a href="https://gist.github.com/truell20/cd964cd3513066b7ff28b7aa5481333b">Python</a>, <a href="https://gist.github.com/Sydriax/a2b8b88c940abe8f346df62a77e23441">Java</a>, and <a href="https://gist.github.com/Sydriax/3aaabd3ecbc03ff997c720e7c5840a9a">C++</a>.</p>
                 <h3>Prerequisites</h3>
-                <p>Make sure that you have read <a href="https://halite.io/basics_intro_halite.php">Introducing Halite</a> and followed the setup procedures described there.</p>
+                <p>Make sure that you have read <a href="https://2016.halite.io/basics_intro_halite.php">Introducing Halite</a> and followed the setup procedures described there.</p>
                 <p>Now open up the MyBot file in your favorite editor and let's get started!</p>
 
                 <h3>Import Considerations</h3>
@@ -56,7 +56,7 @@
 
                 <h3>Utilizing Our Production</h3>
 
-                <p>From the rules outlined in <a href="https://halite.io/basics_intro_halite.php">Introducing Halite</a>, we know that when a piece moves, it gains no strength and leaves behind a piece with zero strength. It easily follows from this that moving zero strength pieces is a terrible idea, since:</p>
+                <p>From the rules outlined in <a href="https://2016.halite.io/basics_intro_halite.php">Introducing Halite</a>, we know that when a piece moves, it gains no strength and leaves behind a piece with zero strength. It easily follows from this that moving zero strength pieces is a terrible idea, since:</p>
                 <ul>
                     <li>A zero strength piece that moves will necessarily stay at zero strength, because pieces don't gain strength for any turn that they move.</li>
                     <li>A zero strength piece won't ever conqueror any territory, because it has no strength with which to damage other pieces.</li>
@@ -80,8 +80,8 @@
 
                 <h3>What's Next?</h3>
                 <p>That's really up to you! How you improve your bot from here is where you step into the competition.</p>
-                <p>That said, if you're looking for more ideas or a stronger starting base, <a href="https://halite.io/user.php?userID=2697">nmalaguti</a> wrote <a href="http://2016.forums.halite.io/t/so-youve-improved-the-random-bot-now-what/482">a tutorial</a> that walks you through improving your combat, piece management, and expansion.</p>
-                <p>If you're interested in machine learning, Two Sigma's own <a href="https://halite.io/user.php?userID=1669">Brian van Leeuwen</a> authored <a href="http://2016.forums.halite.io/t/ml-starter-bot-tutorial/616">an introductory deep learning tutorial</a>.</p>
+                <p>That said, if you're looking for more ideas or a stronger starting base, <a href="https://2016.halite.io/user.php?userID=2697">nmalaguti</a> wrote <a href="http://2016.forums.halite.io/t/so-youve-improved-the-random-bot-now-what/482">a tutorial</a> that walks you through improving your combat, piece management, and expansion.</p>
+                <p>If you're interested in machine learning, Two Sigma's own <a href="https://2016.halite.io/user.php?userID=1669">Brian van Leeuwen</a> authored <a href="http://2016.forums.halite.io/t/ml-starter-bot-tutorial/616">an introductory deep learning tutorial</a>.</p>
                 <p>Good luck!</p>
 
             </div>
