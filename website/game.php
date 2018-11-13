@@ -7,7 +7,7 @@
 
     <link href="lib/bootstrap.min.css" rel="stylesheet">
     <link href="style/general.css" rel="stylesheet">
-    <style type="text/css">   
+    <style type="text/css">
         .glyphicon-refresh-animate {
             -animation: spin .7s infinite linear;
             -webkit-animation: spin2 .7s infinite linear;
@@ -41,6 +41,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.6/pako_inflate.min.js"></script>
     <script src="lib/xss.js"></script>
     <script src="script/general.js"></script>
     <script src="script/backend.js"></script>
