@@ -548,7 +548,7 @@ function showGame(game, $container, maxWidth, maxHeight, showmovement, isminimal
 
 function textFromURL(replayName, $container, callback) {
     var oReq = new XMLHttpRequest();
-    oReq.open("GET", "https://s3.amazonaws.com/halitereplaybucket/"+replayName, true);
+    oReq.open("GET", "https://storage.googleapis.com/ts2018-halite-1-replays/"+replayName, true);
     oReq.onload = function (oEvent) {
         if (oReq.status != 404) {
             callback(textToGame(oReq.response, replayName));
