@@ -436,7 +436,7 @@ function showGame(game, $container, maxWidth, maxHeight, showmovement, isminimal
             var time = Date.now();
             var dt = time - lastTime;
             lastTime = time;
-            
+
             // If we are embedding a game,
             // we want people to be able to scroll with
             // the arrow keys
@@ -548,10 +548,17 @@ function showGame(game, $container, maxWidth, maxHeight, showmovement, isminimal
 
 function textFromURL(replayName, $container, callback) {
     var oReq = new XMLHttpRequest();
-    oReq.open("GET", "https://s3.amazonaws.com/halitereplaybucket/"+replayName, true);
+    oReq.open("GET", "https://storage.googleapis.com/ts2018-halite-1-replays/"+replayName, true);
+    oReq.responseType = "arraybuffer";
     oReq.onload = function (oEvent) {
         if (oReq.status != 404) {
-            callback(textToGame(oReq.response, replayName));
+            try {
+                var decoder = new TextDecoder();
+                var text = decoder.decode(pako.ungzip(oReq.response));
+                callback(textToGame(text, replayName));
+            } catch (e) {
+                callback(textToGame(oReq.response, replayName));
+            }
         } else {
             $container.html("<h1>Gamefile not found</h1><p>The gamefile titled \""+replayName+"\" could not be found. If this problem persists, post of the forums or email us at halite@halite.io.</h1>");
         }
